@@ -33,7 +33,7 @@ jobs:
         uses: rampart-aios/github-actions/.github/actions/docker-snapshot-build@main
         with:
           IMAGE_NAME: ${{ github.repository }}
-          CONTEXT: .
+          CONTEXT: ./web
           # DOCKER_FILE: ./docker/Dockerfile.ui
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
