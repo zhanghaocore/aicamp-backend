@@ -2,6 +2,8 @@ name: Snapshot Build
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: ghcr.io
 on:
   push:
     branches:
