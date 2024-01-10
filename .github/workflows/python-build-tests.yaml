@@ -1,0 +1,35 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python Build and Tests
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+on:
+  workflow_call:
+    secrets:
+      REGISTRY_USERNAME:
+        required: true
+      REGISTRY_PASSWORD:
+        required: true
+      REGISTRY_ADDRESS:
+        required: true
+jobs:
+  python_build_and_test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install ruff pytest-cov==2.6.1 coverage pytest-mock==3.6.1 pytest-asyncio==0.18.1
+        if [ -f requirements.txt ]; then pip install -r web/requirements.txt; fi
+    # - name: Lint with ruff
+    #   run: |
+    #     ruff check --target-version=py39 ./web
