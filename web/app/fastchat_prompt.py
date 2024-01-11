@@ -47,7 +47,12 @@ class FastChatLLM:
         device = "cuda" if torch.cuda.is_available() else "cpu"
         logging.info(f"Device used: {device}")
         tokenizer = AutoTokenizer.from_pretrained(model_name)
-        model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", trust_remote_code=True)
+        model = AutoModelForCausalLM.from_pretrained(model_name
+                                    , device_map="auto"
+                                    , trust_remote_code=True
+                                    , max_memory = {0: "12.5GiB", 1: "13.5GiB", 2: "13.5GiB", 3: "13.5GiB"}
+                                    , offload_folder = "/models/"
+                                    )
         return tokenizer, model, device
 
 

@@ -4,7 +4,7 @@ import time
 import os
 
 
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, make_response
 from werkzeug.exceptions import HTTPException, BadRequest
 from utils.timer import PerformanceTimer
 
@@ -21,7 +21,7 @@ def home():
         return {"message": "MBZUAI CIAI AI Boot Camp Service. v-0.0.1"}
 
 @app.route("/api/chatbot", methods=['GET', 'POST'])
-def chat(data: dict):
+def chat():
     """
     {
         "messages": [
@@ -33,6 +33,7 @@ def chat(data: dict):
     }
     """
     try:
+        data = request.get_json()
         lang = data["lang"]
         if lang not in ["en", "ar"]:
             raise HTTPException(status_code=400, detail=f"Invalid language cod: '{lang}'")
@@ -40,7 +41,7 @@ def chat(data: dict):
     except HTTPException:
         raise
     except Exception:
-        raise HTTPException(status_code=400, detail="Invalid request")
+        raise abort(400)
 
     logging.info(f"request to send '{messages}' in language '{lang}'")
     try:
@@ -48,10 +49,11 @@ def chat(data: dict):
         res = chatbot.chat(messages)
         logging.debug(f"res: {res}")
         end_time = time.time()
-        return (res, end_time - start_time)
+        response = {"res": res, "time": end_time - start_time}
+        return make_response(response, 200)
     except Exception as e:
         logging.error(e)
-        raise HTTPException(status_code=500, detail="An error occured")
+        raise abort(500)
 
 
 if __name__ == "__main__":
