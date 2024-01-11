@@ -3,8 +3,8 @@ services:
   jais-service:
     build: .
     container_name: jais-service
-    # volumes:
-      # - /srv/nfs/:/models
+    volumes:
+      - /models:/models
     ports:
       - '8080:8080'
     networks:
@@ -17,9 +17,7 @@ services:
       - '--port'
       - '8080'
       # - '--register-model'
-      # - '{"path": "/models/dhabi_identity_7B", "name": "dhabi-llama1-7b", "order": 4, "device": "cuda", "num_gpus": "4", "max_memory": {"0": "6GiB", "1": "12GiB", "2": "12GiB", "3": "12GiB"}, "conv_template": "vicuna_v1.1", "temperature": 0.7, "max_new_tokens": 512, "debug": "False"}'
-      # - '--register-model'
-      # - '{"path": "/models/dhabi_llama2_13B", "order": 1, "device": "cuda", "num_gpus": "4", "max_memory": {"0": "6GiB", "1": "12GiB", "2": "12GiB", "3": "12GiB"}, "conv_template": "vicuna_v1.1", "temperature": 0.7, "max_new_tokens": 512, "debug": "False"}'
+      # - '{"path": "/models/core42/jais-13b-chat", "name": "dhabi-llama1-7b", "order": 4, "device": "cuda", "num_gpus": "4", "max_memory": {"0": "6GiB", "1": "12GiB", "2": "12GiB", "3": "12GiB"}, "conv_template": "vicuna_v1.1", "temperature": 0.7, "max_new_tokens": 512, "debug": "False"}'
 
 networks:
   aibootcampnetwork:
