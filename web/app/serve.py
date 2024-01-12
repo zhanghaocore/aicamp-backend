@@ -73,9 +73,8 @@ if __name__ == "__main__":
     model_path = "/models/core42/jais-13b-chat/"
     if os.path.exists(model_path):
         logging.info(f"The path '{model_path}' will be loaded.")
+        chatbot = FastChatLLM(model_name=model_path, device='cuda', num_gpus='4', load_8bit=False, temperature=0.7, max_new_tokens=512, debug=False)
     else:
         logging.error(f"Model path '{model_path}' is not exist!")
-
-    chatbot = FastChatLLM(model_name=model_path, device='cuda', num_gpus='4', load_8bit=False, temperature=0.7, max_new_tokens=512, debug=False)
 
     app.run(debug=args.debug, host=args.host, port=args.port)
