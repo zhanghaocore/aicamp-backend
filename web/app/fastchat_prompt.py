@@ -50,7 +50,7 @@ class FastChatLLM:
         model = AutoModelForCausalLM.from_pretrained(model_name
                                     , device_map="auto"
                                     , trust_remote_code=True
-                                    , max_memory = {0: "12.5GiB", 1: "13.5GiB", 2: "13.5GiB", 3: "13.5GiB"}
+                                    , max_memory = {0: "13GiB", 1: "15GiB", 2: "15GiB", 3: "15GiB"}
                                     , offload_folder = "/models/"
                                     )
         return tokenizer, model, device
