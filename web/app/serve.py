@@ -34,18 +34,22 @@ def chat():
     """
     try:
         data = request.get_json()
+        logging.info(f"request data: {data}")
         lang = data["lang"]
         if lang not in ["en", "ar"]:
             raise HTTPException(status_code=400, detail=f"Invalid language cod: '{lang}'")
         messages = data["messages"]
-    except HTTPException:
+    except HTTPException as e:
+        logging.error(f"Bad request: {request.data}, error: {e}")
         raise
-    except Exception:
+    except Exception as e:
+        logging.error(f"Invalid request: {request.data}, error: {e}")
         raise abort(400)
 
     logging.info(f"request to send '{messages}' in language '{lang}'")
     try:
         start_time = time.time()
+        res=""
         res = chatbot.chat(messages)
         logging.debug(f"res: {res}")
         end_time = time.time()
