@@ -4,7 +4,7 @@ import time
 import os
 
 
-from flask import Flask, request, jsonify, abort, make_response
+from flask import Flask, request, jsonify, abort, make_response, Response
 from werkzeug.exceptions import HTTPException, BadRequest
 from utils.timer import PerformanceTimer
 
@@ -39,21 +39,25 @@ def chat():
         if lang not in ["en", "ar"]:
             raise HTTPException(status_code=400, detail=f"Invalid language cod: '{lang}'")
         messages = data["messages"]
+    except BadRequest as e:
+        logging.error(f"Bad request: {request.data}, error: {e.get_description()}")
+        raise abort(Response('400, The browser (or proxy) sent a request that this server could not understand. Please make sure you are sending a valid JSON request.'))
     except HTTPException as e:
-        logging.error(f"Bad request: {request.data}, error: {e}")
-        raise
+        logging.error(f"Bad request: {request.data}, error: {e.get_description()}")
+        raise abort(400)
     except Exception as e:
-        logging.error(f"Invalid request: {request.data}, error: {e}")
+        logging.error(f"Invalid request: {request.data}, error: {e.get_description()}")
         raise abort(400)
 
     logging.info(f"request to send '{messages}' in language '{lang}'")
     try:
         start_time = time.time()
-        res="Test V-0.1.0"
-        # res = chatbot.chat(messages)
+        # res="Test V-0.1.0"
+        res = chatbot.chat(messages)
         logging.debug(f"res: {res}")
         end_time = time.time()
         response = {"res": res, "time": end_time - start_time}
+        logging.info(f"response: {response}")
         return make_response(response, 200)
     except Exception as e:
         logging.error(e)
@@ -77,7 +81,7 @@ if __name__ == "__main__":
     model_path = "/models/core42/jais-13b-chat/"
     if os.path.exists(model_path):
         logging.info(f"The path '{model_path}' will be loaded.")
-        # chatbot = FastChatLLM(model_name=model_path, device='cuda', num_gpus='4', load_8bit=False, temperature=0.7, max_new_tokens=512, debug=False)
+        chatbot = FastChatLLM(model_name=model_path, device='cuda', num_gpus='4', load_8bit=False, temperature=0.7, max_new_tokens=512, debug=False)
     else:
         logging.error(f"Model path '{model_path}' is not exist!")
 
