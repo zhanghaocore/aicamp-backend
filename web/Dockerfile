@@ -3,4 +3,5 @@ WORKDIR /app/
 COPY ./requirements.txt ./
 RUN pip install -r requirements.txt
 COPY ./app/ ./
+RUN export CUDA_VISIBLE_DEVICES=1,2,3
 ENTRYPOINT ["python", "serve.py", "--host", "0.0.0.0", "--port", "8080"]

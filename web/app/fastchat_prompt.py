@@ -48,9 +48,8 @@ class FastChatLLM:
         logging.info(f"Device used: {device}")
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name
-                                    , device_map="auto"
+                                    , device_map=device
                                     , trust_remote_code=True
-                                    , max_memory = {0: "13GiB", 1: "15GiB", 2: "15GiB", 3: "15GiB"}
                                     , offload_folder = "/models/"
                                     )
         return tokenizer, model, device
