@@ -52,8 +52,8 @@ def chat():
     logging.info(f"request to send '{messages}' in language '{lang}'")
     try:
         start_time = time.time()
-        res="Test V-0.1.0"
-        # res = chatbot.chat(messages)
+        # res="Test V-0.1.0"
+        res = chatbot.chat(messages)
         logging.debug(f"res: {res}")
         end_time = time.time()
         response = {"res": res, "time": end_time - start_time}
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     model_path = "/models/core42/jais-13b-chat/"
     if os.path.exists(model_path):
         logging.info(f"The path '{model_path}' will be loaded.")
-        # chatbot = FastChatLLM(model_name=model_path, device='cuda', num_gpus='4', load_8bit=False, temperature=0.7, max_new_tokens=512, debug=False)
+        chatbot = FastChatLLM(model_name=model_path, device='cuda', num_gpus='4', load_8bit=False, temperature=0.7, max_new_tokens=512, debug=False)
     else:
         logging.error(f"Model path '{model_path}' is not exist!")
 
